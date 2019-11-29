@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="GluttonousSnake.css">
+</head>
+
+<body>
+    <div id="gluttonousSnake">
+        <table border="1" cellspacing="0">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <div id="map"></div>
+    </div>
+    <script>
+        var map = document.getElementById('map')
+        var bodyNodes = [] //蛇的身体
+
+        var Nodes = [] //放置蛇的全部(蛇头、身体)
+
+
+
+        function createDiv(color) {
+            var div = document.createElement('div') //创建动态div
+            div.style.width = '30px'
+            div.style.height = '30px'
+            div.style.position = 'absolute' //改变位置，不让其独立成行
+
+            div.style.left = parseInt(Math.random() * 10) * 30 + "px" //产生随机位置
+            div.style.top = parseInt(Math.random() * 10) * 30 + "px"
+
+            div.style.backgroundColor = color
+            map.appendChild(div) //把创建的动态div append到id为map的容器里
+            return div
+        }
+
+
+
+
+
+        var headNode = createDiv('red') //创建蛇头
+        Nodes.push(headNode)
+        headNode.value = 'left' //蛇头的默认方向
+        // console.log(headNode)
+        var footNode = createDiv('yellow') //创建食物
+        // console.log(footNode)
+
+
+        function move() {
+            // 身体移动通过循环来控制
+            if (bodyNodes.length > 0) {
+                for (let n = bodyNodes.length - 1; n >= 0; n--) {
+                    switch (bodyNodes[n].value) {
+                        case 'top':
+                            bodyNodes[n].style.top = parseInt(bodyNodes[n].style.top) - 30 + 'px'
+                            break
+                        case 'bottom':
+                            bodyNodes[n].style.top = parseInt(bodyNodes[n].style.top) + 30 + 'px'
+                            break
+                        case 'left':
+                            bodyNodes[n].style.left = parseInt(bodyNodes[n].style.left) - 30 + 'px'
+                            break
+                        case 'right':
+                            bodyNodes[n].style.left = parseInt(bodyNodes[n].style.left) + 30 + 'px'
+                            break
+                    }
+                    if (n == 0) {
+                        bodyNodes[n].value = headNode.value
+                    } else {
+                        bodyNodes[n].value = bodyNodes[n - 1].value
+                    }
+
+                }
+            }
+
+
+
+
+
+
+            switch (headNode.value) {
+                case 'top':
+                    headNode.style.top = parseInt(headNode.style.top) - 30 + 'px'
+                    break
+                case 'bottom':
+                    headNode.style.top = parseInt(headNode.style.top) + 30 + 'px'
+                    break
+                case 'left':
+                    headNode.style.left = parseInt(headNode.style.left) - 30 + 'px'
+                    break
+                case 'right':
+                    headNode.style.left = parseInt(headNode.style.left) + 30 + 'px'
+                    break
+            }
+
+
+            // 当蛇头撞到墙的时候，游戏结束
+            if (parseInt(headNode.style.left) < 0 || parseInt(headNode.style.left) > 270 || parseInt(headNode.style
+                    .top) < 0 || parseInt(headNode.style.top) > 270) {
+                clearInterval(t)
+                alert("撞墙啦,游戏结束")
+
+                //防止蛇头超出指定范围
+                //     switch (headNode.value) {
+                //     case 'left':
+                //         headNode.style.left = 0
+                //         break
+                //     case 'right':
+                //         headNode.style.left = 270+'px'
+                //         break
+                //     case 'top':
+                //         headNode.style.top = 0+ 'px'
+                //         break
+                //     case 'bottom':
+                //         headNode.style.top = 270+'px'
+                //         break
+                // }
+            }
+            //当蛇头与身体重叠的时候，游戏结束
+            if (bodyNodes.length > 0) {
+                for (let n = 0; n < bodyNodes.length; n++) {
+                    if (headNode.style.left == bodyNodes[n].style.left && headNode.style.top == bodyNodes[n].style
+                        .top) {
+                        alert("游戏结束")
+                        clearInterval(t)
+                    }
+
+                }
+            }
+
+
+            // 碰撞检测，当蛇头和食物重叠(蛇头吃到食物)的时候，就改变食物的位置
+            if (headNode.style.left == footNode.style.left && headNode.style.top == footNode.style.top) {
+                // console.log("z")
+                var bodyNode = createDiv('white')
+                var lastNode
+
+                if (bodyNodes.length > 0) {
+                    lastNode = bodyNodes[bodyNodes.length - 1]
+                } else {
+                    lastNode = headNode
+                }
+
+                //根据最后一块的移动方向来改变产生身体的位置
+                switch (lastNode.value) {
+                    case 'top':
+                        bodyNode.style.top = parseInt(lastNode.style.top) + 30 + 'px'
+                        bodyNode.style.left = lastNode.style.left
+                        break
+                    case 'bottom':
+                        bodyNode.style.top = parseInt(lastNode.style.top) - 30 + 'px'
+                        bodyNode.style.left = lastNode.style.left
+                        break
+                    case 'left':
+                        bodyNode.style.left = parseInt(lastNode.style.left) + 30 + 'px'
+                        bodyNode.style.top = lastNode.style.top
+                        break
+                    case 'right':
+                        bodyNode.style.left = parseInt(lastNode.style.left) - 30 + 'px'
+                        bodyNode.style.top = lastNode.style.top
+                        break
+                }
+
+                bodyNode.value = lastNode.value //新产生的身体跟在最后一个的后面
+
+                bodyNodes.push(bodyNode)
+                Nodes.push(bodyNode)
+                var px = parseInt(Math.random() * 10) * 30
+                var py = parseInt(Math.random() * 10) * 30
+
+
+                for (let n = 0; n < Nodes.length; n++) {
+                    if (parseInt(Nodes[n].style.left) == px && parseInt(Nodes[n].style.top == py)) {
+                        px = parseInt(Math.random() * 10) * 30
+                        py = parseInt(Math.random() * 10) * 30
+                        n = -1
+                    }
+
+                }
+
+
+                footNode.style.left = px + 'px'
+                footNode.style.top = py + 'px'
+                // footNode.style.left = parseInt(Math.random() * 10) * 30 + "px"
+                // footNode.style.top = parseInt(Math.random() * 10) * 30 + "px"
+            }
+        }
+        var t = setInterval(move, 300)
+
+
+
+
+
+
+        //键盘触碰事件，通过键盘的上下左右键来控制蛇头的方向
+        document.onkeydown = function (e) {
+            // console.log(e.keyCode)
+            // 38/40/37/39
+            switch (e.keyCode) {
+                case 38:
+                    if (headNode.value != 'bottom' || bodyNodes.length == 0) {
+                        headNode.value = 'top'
+                    }
+
+                    break
+                case 40:
+                    if (headNode.value != 'top' || bodyNodes.length == 0) {
+                        headNode.value = 'bottom'
+                    }
+
+                    break
+                case 37:
+
+                    if (headNode.value != 'right' || bodyNodes.length == 0) {
+                        headNode.value = 'left'
+                    }
+
+                    break
+                case 39:
+                    if (headNode.value != 'left' || bodyNodes.length == 0) {
+                        headNode.value = 'right'
+                    }
+
+                    break
+            }
+        }
+    </script>
+</body>
+
+</html>
